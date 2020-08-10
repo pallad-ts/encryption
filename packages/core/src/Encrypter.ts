@@ -99,7 +99,7 @@ export class Encrypter {
             iv
         );
 
-        let decoded = decipher.update(encrypted, 'hex', 'utf8');
+        let decoded = decipher.update(encrypted, undefined, 'utf8');
         decoded += decipher.final('utf8');
         return secret(decoded);
     }

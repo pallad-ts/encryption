@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EncryptedValue creating from formatted string fail - invalid value for encoding 1`] = `"IV or Encrypted value are empty"`;
+
+exports[`EncryptedValue creating from string fail One of value is blank or empty:    :0000 1`] = `"IV or Encrypted value are empty"`;
+
+exports[`EncryptedValue creating from string fail One of value is blank or empty: : 1`] = `"IV or Encrypted value are empty"`;
+
+exports[`EncryptedValue creating from string fail One of value is blank or empty: :0000 1`] = `"IV or Encrypted value are empty"`;
+
+exports[`EncryptedValue creating from string fail One of value is blank or empty: 0000:    1`] = `"IV or Encrypted value are empty"`;
+
+exports[`EncryptedValue creating from string fail One of value is blank or empty: 0000: 1`] = `"IV or Encrypted value are empty"`;
+
+exports[`EncryptedValue creating from string fail malformed 1`] = `"Malformed encrypted string"`;

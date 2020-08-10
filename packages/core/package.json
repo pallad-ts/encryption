@@ -1,0 +1,41 @@
+{
+  "name": "@pallad/encryption",
+  "version": "0.0.0",
+  "description": "Simple module for data encryption",
+  "main": "compiled/index.js",
+  "types": "compiled/index.d.ts",
+  "scripts": {
+    "test": "../../node_modules/.bin/pallad-scripts test",
+    "compile": "../../node_modules/.bin/pallad-scripts compile",
+    "lint": "../../node_modules/.bin/pallad-scripts lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pallad-ts/encryption.git"
+  },
+  "keywords": [
+    "encryption",
+    "encrypter"
+  ],
+  "files": [
+    "compiled"
+  ],
+  "engines": {
+    "node": ">=11.6"
+  },
+  "author": "Łukasz Kuzyński <lukasz.kuzynski@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pallad-ts/encryption/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/pallad-ts/encryption#readme",
+  "dependencies": {
+    "@pallad/secret": "^1.0.2",
+    "monet": "^0.9.1",
+    "predicates": "^2.0.3",
+    "tslib": "^2.0.1"
+  }
+}

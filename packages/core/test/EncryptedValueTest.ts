@@ -40,8 +40,8 @@ describe('EncryptedValue', () => {
 
                     expect(result.fail())
                         .toMatchSnapshot();
-                })
-            })
+                });
+            });
         });
 
         describe('from formatted string', () => {
@@ -51,14 +51,26 @@ describe('EncryptedValue', () => {
             ])('encoding: %s', (encoding) => {
                 const iv = randomBytes(10);
                 const encrypted = randomBytes(50);
-
                 const result = EncryptedValue.fromStringFormatted(
                     iv.toString(encoding),
                     encrypted.toString(encoding),
                     encoding
                 );
+                expect(result.success())
+                    .toMatchObject({
+                        iv: iv,
+                        encrypted: encrypted
+                    })
+            });
 
+            it('fail - invalid value for encoding', () => {
+                const result = EncryptedValue.fromStringFormatted('jnkm', randomBytes(2).toString('hex'));
 
+                expect(result.isFail())
+                    .toBe(true);
+
+                expect(result.fail())
+                    .toMatchSnapshot();
             });
         });
     });

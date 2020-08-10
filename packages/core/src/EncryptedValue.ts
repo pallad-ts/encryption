@@ -3,6 +3,10 @@ import * as is from 'predicates'
 
 export class EncryptedValue {
     constructor(readonly iv: Buffer, readonly encrypted: Buffer) {
+        if (iv.length === 0 || encrypted.length === 0) {
+            throw new Error('IV or Encrypted value are empty');
+        }
+
         Object.freeze(this);
     }
 
