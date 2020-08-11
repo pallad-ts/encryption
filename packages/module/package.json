@@ -1,8 +1,7 @@
 {
   "name": "@pallad/encryption-module",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Encryptio module for @pallad/modules",
-
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
   "scripts": {
@@ -25,8 +24,8 @@
   "author": "Łukasz Kużyński <lukasz.kuzynski@gmail.com> (http://wookieb.pl)",
   "license": "MIT",
   "dependencies": {
-    "@pallad/modules": "^1.2.0",
-    "@pallad/encryption": "*"
+    "@pallad/encryption": "^1.0.0",
+    "@pallad/modules": "^1.2.0"
   },
   "publishConfig": {
     "access": "public"
