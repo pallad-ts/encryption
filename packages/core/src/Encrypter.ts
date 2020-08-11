@@ -16,6 +16,7 @@ const isKeyObject: TypeGuardPredicate<KeyObject> = is.instanceOf(KeyObject);
 const isCipherKeyPredicate = is.any(
     is.string,
     isKeyObject,
+    is.instanceOf(Buffer),
     is.instanceOf(Uint8Array),
     is.instanceOf(Uint8ClampedArray),
     is.instanceOf(Uint16Array),
@@ -52,14 +53,15 @@ export class Encrypter {
 
     constructor(optionsOrSecret: Encrypter.Options.FromUser | Encrypter.Secret) {
         this.options = Object.assign({},
-            isSecret(optionsOrSecret) ? {secret: optionsOrSecret} : optionsOrSecret,
             {
                 algorithm: 'aes-256-cbc',
                 ivLength: 16
-            });
+            },
+            isSecret(optionsOrSecret) ? {secret: optionsOrSecret} : optionsOrSecret,
+        );
     }
 
-    static fromRaw(optionsOrSecret: Encrypter.Options.Raw | CipherKey) {
+    static fromRaw(optionsOrSecret: Encrypter.Options.Raw | Encrypter.Secret.Raw) {
         let secret: Encrypter.Secret;
         let opts: Omit<Encrypter.Options.Raw, 'secret'>;
 
@@ -67,8 +69,8 @@ export class Encrypter {
             secret = toSecret(optionsOrSecret);
             opts = {};
         } else {
-            secret = toSecret(optionsOrSecret.secret);
             const {secret: s, ...restOpts} = optionsOrSecret;
+            secret = toSecret(s);
             opts = restOpts
         }
         return new Encrypter({

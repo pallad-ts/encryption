@@ -1,0 +1,33 @@
+{
+  "name": "@pallad/encryption-module",
+  "version": "0.0.0",
+  "description": "Encryptio module for @pallad/modules",
+
+  "main": "compiled/index.js",
+  "types": "compiled/index.d.ts",
+  "scripts": {
+    "test": "../../node_modules/.bin/pallad-scripts test",
+    "compile": "../../node_modules/.bin/pallad-scripts compile",
+    "lint": "../../node_modules/.bin/pallad-scripts lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pallad-ts/encryption.git"
+  },
+  "keywords": [
+    "encryption",
+    "encrypter"
+  ],
+  "files": [
+    "compiled"
+  ],
+  "author": "Łukasz Kużyński <lukasz.kuzynski@gmail.com> (http://wookieb.pl)",
+  "license": "MIT",
+  "dependencies": {
+    "@pallad/modules": "^1.2.0",
+    "@pallad/encryption": "*"
+  },
+  "peerDependencies": {
+    "alpha-dic": "^2"
+  }
+}
