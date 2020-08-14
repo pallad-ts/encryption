@@ -41,6 +41,32 @@ describe('EncryptedValue', () => {
                     expect(result.fail())
                         .toMatchSnapshot();
                 });
+
+                it.each([
+                    ['10:hg'],
+                    ['hg:10']
+                ])('Invalid hex: %s', value => {
+                    const result = EncryptedValue.fromString(value);
+
+                    expect(result.isFail())
+                        .toBe(true);
+
+                    expect(result.fail())
+                        .toMatchSnapshot();
+                });
+
+                it.each([
+                    ['uuLMhh==:dfasdfr342'],
+                    ['dfasdfr342:uuLMhh==']
+                ])('Invalid base64: %s', value => {
+                    const result = EncryptedValue.fromString(value, 'base64');
+
+                    expect(result.isFail())
+                        .toBe(true);
+
+                    expect(result.fail())
+                        .toMatchSnapshot();
+                });
             });
         });
 

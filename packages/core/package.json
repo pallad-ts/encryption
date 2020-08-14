@@ -35,6 +35,7 @@
   "homepage": "https://github.com/pallad-ts/encryption#readme",
   "dependencies": {
     "@pallad/secret": "^1.0.2",
+    "is-base64": "^1.1.0",
     "monet": "^0.9.1",
     "predicates": "^2.0.3",
     "tslib": "^2.0.1"
