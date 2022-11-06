@@ -1,18 +1,20 @@
-import {Either, Validation} from "monet";
 import * as is from 'predicates'
+import {Either, left, right} from '@sweet-monads/either';
 
-const _isBase64 = require('is-base64');
+const isBase64Internal = require('is-base64');
 
 const HEX_PATTERN = /^([0-9a-f]+)$/
+
 function isHex(value: string) {
     return HEX_PATTERN.test(value);
 }
 
 function isBase64(value: string) {
-    return _isBase64(value, {
+    return isBase64Internal(value, {
         allowEmpty: false
     });
 }
+
 
 export class EncryptedValue {
     constructor(readonly iv: Buffer, readonly encrypted: Buffer) {
@@ -34,38 +36,43 @@ export class EncryptedValue {
         ];
     }
 
-    static fromString(str: string, encoding: EncryptedValue.Encoding = 'hex'): Validation<string, EncryptedValue> {
+    static fromString(str: string, encoding: EncryptedValue.Encoding = 'hex'): Either<string, EncryptedValue> {
         const result = str.split(':', 2);
 
         if (result.length !== 2) {
-            return Validation.Fail('Malformed encrypted string');
+            return left('Malformed encrypted string');
         }
 
         if (is.blank(result[0]) || is.blank(result[1])) {
-            return Validation.Fail('IV or Encrypted value are empty');
+            return left('IV or Encrypted value are empty');
         }
 
         const isValidIv = encoding === 'hex' ? isHex(result[0]) : isBase64(result[0]);
         const isValidEncrypted = encoding === 'hex' ? isHex(result[1]) : isBase64(result[1]);
 
         if (!isValidIv || !isValidEncrypted) {
-            return Validation.Fail(`Invalid value for encoding: ${encoding}`);
+            return left(`Invalid value for encoding: ${encoding}`);
         }
 
-        return Validation.Success(
-            EncryptedValue.fromStringFormatted(result[0], result[1], encoding).success()
-        );
+        return EncryptedValue.fromStringFormatted(result[0], result[1], encoding);
     }
 
-    static fromStringFormatted(iv: string, encrypted: string, encoding: EncryptedValue.Encoding = 'hex'): Validation<string, EncryptedValue> {
-        return Either.fromTry(() => {
+    static fromStringFormatted(iv: string, encrypted: string, encoding: EncryptedValue.Encoding = 'hex'): Either<string, EncryptedValue> {
+        return fromTry(() => {
             return new EncryptedValue(
                 Buffer.from(iv, encoding),
                 Buffer.from(encrypted, encoding)
             )
         })
-            .leftMap(x => x.message)
-            .toValidation();
+            .mapLeft(x => x.message)
+    }
+}
+
+function fromTry<T>(fn: () => T): Either<Error, T> {
+    try {
+        return right(fn());
+    } catch (e) {
+        return left(e as Error);
     }
 }
 

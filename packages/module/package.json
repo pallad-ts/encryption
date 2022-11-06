@@ -24,8 +24,8 @@
   "author": "Łukasz Kużyński <lukasz.kuzynski@gmail.com> (http://wookieb.pl)",
   "license": "MIT",
   "dependencies": {
-    "@pallad/encryption": "^1.0.1",
-    "@pallad/modules": "^1.2.0"
+    "@pallad/encryption": "*",
+    "@pallad/modules": "*"
   },
   "publishConfig": {
     "access": "public"

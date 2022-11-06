@@ -52,13 +52,11 @@ export class Encrypter {
     private options: Encrypter.Options;
 
     constructor(optionsOrSecret: Encrypter.Options.FromUser | Encrypter.Secret) {
-        this.options = Object.assign({},
-            {
-                algorithm: 'aes-256-cbc',
-                ivLength: 16
-            },
-            isSecret(optionsOrSecret) ? {secret: optionsOrSecret} : optionsOrSecret,
-        );
+        this.options = {
+            algorithm: 'aes-256-cbc',
+            ivLength: 16,
+            ...(isSecret(optionsOrSecret) ? {secret: optionsOrSecret} : optionsOrSecret),
+        };
     }
 
     static fromRaw(optionsOrSecret: Encrypter.Options.Raw | Encrypter.Secret.Raw) {
