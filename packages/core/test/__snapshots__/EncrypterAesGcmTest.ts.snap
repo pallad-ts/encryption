@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EncrypterAesGcm creating keyring will not accept keys with invalid size 1`] = `"Key custom validation violated: Key size 400 is not allowed"`;

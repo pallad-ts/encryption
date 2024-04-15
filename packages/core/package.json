@@ -34,10 +34,15 @@
   },
   "homepage": "https://github.com/pallad-ts/encryption#readme",
   "dependencies": {
+    "@pallad/errors": "^1.0.1",
+    "@pallad/keyring": "^1.5.0",
     "@pallad/secret": "^1.0.2",
     "@sweet-monads/either": "^3.1.0",
     "is-base64": "^1.1.0",
-    "predicates": "^2.0.3",
-    "tslib": "^2.0.1"
+    "tslib": "^2.0.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@pallad/errors-dev": "^1.1.0"
   }
 }

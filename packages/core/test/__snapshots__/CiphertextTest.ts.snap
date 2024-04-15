@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ciphertext creating cannot be instantiated directly 1`] = `"Use Ciphertext.fromString or Ciphertext.schema.parse to create Ciphertext"`;
+
+exports[`Ciphertext creating from string fail malformed empty string 1`] = `"Malformed ciphertext"`;
+
+exports[`Ciphertext creating from string fail malformed extra data 1`] = `"Invalid input length"`;
+
+exports[`Ciphertext creating from string fail malformed invalid encrypted length 1`] = `"Malformed ciphertext"`;
+
+exports[`Ciphertext creating from string fail malformed invalid iv length 1`] = `"Malformed ciphertext"`;
+
+exports[`Ciphertext creating from string fail malformed invalid key id length 1`] = `"Malformed ciphertext"`;
+
+exports[`Ciphertext creating from string fail malformed missing encrypted 1`] = `"Malformed ciphertext"`;
+
+exports[`Ciphertext creating from string fail malformed missing encrypted length 1`] = `"Malformed ciphertext"`;
+
+exports[`Ciphertext creating from string fail malformed missing iv 1`] = `"Malformed ciphertext"`;
+
+exports[`Ciphertext creating from string fail malformed missing iv length 1`] = `"Malformed ciphertext"`;
+
+exports[`Ciphertext creating from string fail malformed missing key id 1`] = `"Malformed ciphertext"`;
