@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "../compiled",
+    "skipLibCheck": true,
     "composite": true
   },
   "include": [

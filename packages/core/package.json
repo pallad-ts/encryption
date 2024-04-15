@@ -1,6 +1,6 @@
 {
   "name": "@pallad/encryption",
-  "version": "3.0.0",
+  "version": "2.9.9",
   "description": "Simple module for data encryption",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
@@ -44,5 +44,6 @@
   },
   "devDependencies": {
     "@pallad/errors-dev": "^1.1.0"
-  }
+  },
+  "gitHead": "3991c0de7b6db53faa0f751951ce8a1227a3552d"
 }
