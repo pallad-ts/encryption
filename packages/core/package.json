@@ -1,6 +1,6 @@
 {
   "name": "@pallad/encryption",
-  "version": "3.0.0",
+  "version": "2.9.9",
   "description": "Simple module for data encryption",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
