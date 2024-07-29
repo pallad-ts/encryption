@@ -1,6 +1,5 @@
-import { Either, fromTry, left, right } from "@sweet-monads/either";
+import { Either, fromTry } from "@sweet-monads/either";
 import { KeyId, KeyIdSchema } from "@pallad/keyring";
-import { ERRORS } from "./errors";
 import { z } from "zod";
 import { Buffer } from "node:buffer";
 import { EncryptionError } from "./EncryptionError";
@@ -33,15 +32,28 @@ export class Ciphertext {
     readonly iv: Buffer;
     readonly encrypted: Buffer;
 
+    #buffer: Buffer | undefined;
+
     constructor() {
         throw new Error("Use Ciphertext.fromString or Ciphertext.schema.parse to create Ciphertext");
     }
 
     toString() {
-        return Buffer.concat(Array.from(encode(this))).toString("base64");
+        return this.toBuffer().toString("base64");
+    }
+
+    toBuffer() {
+        if (!this.#buffer) {
+            this.#buffer = Buffer.concat(Array.from(encode(this)));
+        }
+        return this.#buffer;
     }
 
     static fromString(input: string): Either<string, Ciphertext> {
+        return Ciphertext.fromBuffer(Buffer.from(input, "base64"));
+    }
+
+    static fromBuffer(input: Buffer): Either<string, Ciphertext> {
         return fromTry<EncryptionError, Ciphertext>(() => {
             const [keyId, iv, encrypted] = Array.from(decode(input));
             return Ciphertext.schema.parse({ keyId, iv, encrypted });
@@ -64,9 +76,7 @@ function* encode(input: Ciphertext): Generator<Buffer> {
 
 const MALFORMED = "Malformed ciphertext";
 
-function* decode(input: string) {
-    const buffer = Buffer.from(input, "base64");
-
+function* decode(buffer: Buffer) {
     let offset = 0;
     const keySize = readUInt8(buffer, offset++);
     yield readAscii(buffer, offset, keySize);

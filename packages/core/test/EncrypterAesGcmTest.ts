@@ -4,6 +4,7 @@ import { Encrypter } from "@src/Encrypter";
 import { KeyRing } from "@pallad/keyring";
 import "@pallad/errors-dev";
 import { ERRORS } from "@src/errors";
+import { TextBufferView } from "@pallad/text-buffer-view";
 
 describe("EncrypterAesGcm", () => {
     let encrypter: EncrypterAesGcm;
@@ -16,9 +17,12 @@ describe("EncrypterAesGcm", () => {
     });
 
     async function assertEncodesAndDecodes(encrypter: Encrypter, input: string = "foobar") {
-        const encrypted = await encrypter.encryptFromString(input, "utf8");
-        const decrypted = await encrypter.decryptToString(encrypted, "utf8");
-        expect(decrypted).toEqual(input);
+        const encryptedBuffer = await encrypter.encrypt(Buffer.from(input, "utf8"));
+        const decryptedBuffer = await encrypter.decrypt(encryptedBuffer);
+        const encryptedTextBufferView = await encrypter.encrypt(TextBufferView.fromString(input, "utf8"));
+        const decryptedTextBufferView = await encrypter.decrypt(encryptedTextBufferView);
+        expect(decryptedBuffer.toString('utf8')).toEqual(input);
+        expect(decryptedTextBufferView.toString('utf8')).toEqual(input);
     }
 
     it.each([["somerandomstring"], [JSON.stringify({ some: { random: "data" } })]])(

@@ -6,6 +6,8 @@ import { KeyRing, KeyId } from "@pallad/keyring";
 import { Range } from "@pallad/range";
 import { left, right } from "@sweet-monads/either";
 import { ERRORS } from "./errors";
+import { TextBufferView } from "@pallad/text-buffer-view";
+import { EncryptionError } from "./EncryptionError";
 
 const ALGORITHM = "AES-GCM";
 
@@ -30,7 +32,7 @@ export class EncrypterAesGcm extends Encrypter {
         options?: EncrypterAesGcm.Options.FromUser
     ) {
         validateKeyRing(keyRing);
-        super(keyRing);
+        super();
 
         this.options = EncrypterAesGcm.OptionsSchema.parse({
             ivLength: 12,
@@ -38,7 +40,7 @@ export class EncrypterAesGcm extends Encrypter {
         });
     }
 
-    async encrypt(data: ArrayBuffer, keyId?: KeyId): Promise<Ciphertext> {
+    async encrypt(data: Buffer | TextBufferView, keyId?: KeyId): Promise<TextBufferView> {
         const key = keyId ? this.keyRing.assertEntryById(keyId) : this.keyRing.getRandomKey();
 
         const [iv, cryptoKey] = await Promise.all([
@@ -47,16 +49,24 @@ export class EncrypterAesGcm extends Encrypter {
         ]);
 
         const encrypted = Buffer.from(
-            await webcrypto.subtle.encrypt({ name: ALGORITHM, iv, tagLength: 128 }, cryptoKey, data)
+            await webcrypto.subtle.encrypt(
+                { name: ALGORITHM, iv, tagLength: 128 },
+                cryptoKey,
+                data instanceof TextBufferView ? data.originalArrayBuffer : data
+            )
         );
-        return Ciphertext.schema.parse({ keyId: key.id, iv, encrypted });
+        return new TextBufferView(Ciphertext.schema.parse({ keyId: key.id, iv, encrypted }).toBuffer());
     }
 
-    async decrypt(data: Ciphertext): Promise<Buffer> {
-        const { iv, encrypted } = data;
-        const key = this.keyRing.assertKeyById(data.keyId);
+    async decrypt(data: TextBufferView): Promise<TextBufferView> {
+        const { iv, encrypted, keyId } = Ciphertext.fromBuffer(Buffer.from(data.arrayBuffer)).unwrap(x => {
+            throw new EncryptionError(x);
+        });
+        const key = this.keyRing.assertKeyById(keyId);
         const cryptoKey = await getCryptoKey(key.getValue());
-        return Buffer.from(await webcrypto.subtle.decrypt({ name: ALGORITHM, iv }, cryptoKey, encrypted));
+        return TextBufferView.fromArrayBuffer(
+            await webcrypto.subtle.decrypt({ name: ALGORITHM, iv }, cryptoKey, encrypted)
+        );
     }
 
     static createKeyRing() {
