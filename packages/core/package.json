@@ -1,6 +1,6 @@
 {
   "name": "@pallad/encryption",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Abstraction layer over data encryption and decryption",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",

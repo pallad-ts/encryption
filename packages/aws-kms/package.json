@@ -1,6 +1,6 @@
 {
   "name": "@pallad/encryption-aws-kms",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "AWS KMS encryption for @pallad/encryption",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
@@ -39,7 +39,7 @@
   "homepage": "https://github.com/pallad-ts/encryption#readme",
   "dependencies": {
     "@aws-sdk/client-kms": "^3.620.1",
-    "@pallad/encryption": "^3",
+    "@pallad/encryption": "^4.0.0",
     "@pallad/text-buffer-view": "^1.0.3",
     "@sweet-monads/either": "^3.1.0"
   },
