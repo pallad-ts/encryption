@@ -1,6 +1,6 @@
 {
   "name": "@pallad/encryption-aws-kms",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "AWS KMS encryption for @pallad/encryption",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
