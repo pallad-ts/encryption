@@ -1,7 +1,7 @@
 {
-  "name": "@pallad/encryption",
-  "version": "3.0.0",
-  "description": "Abstraction layer over data encryption and decryption",
+  "name": "@pallad/encryption-aws-kms",
+  "version": "0.1.0",
+  "description": "AWS KMS encryption for @pallad/encryption",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
   "scripts": {
@@ -18,7 +18,9 @@
     "encryption",
     "encrypter",
     "decrypter",
-    "decryption"
+    "decryption",
+    "aws kms",
+    "kms"
   ],
   "files": [
     "compiled"
@@ -36,15 +38,14 @@
   },
   "homepage": "https://github.com/pallad-ts/encryption#readme",
   "dependencies": {
-    "@pallad/errors": "^1.0.1",
-    "@pallad/keyring": "^1.5.0",
+    "@aws-sdk/client-kms": "^3.620.1",
+    "@pallad/encryption": "^3",
     "@pallad/text-buffer-view": "^1.0.3",
-    "@sweet-monads/either": "^3.1.0",
-    "tslib": "^2.0.1",
-    "zod": "^3.22.4"
+    "@sweet-monads/either": "^3.1.0"
   },
   "devDependencies": {
-    "@pallad/errors-dev": "^1.1.0"
+    "@pallad/errors-dev": "^1.1.0",
+    "@testcontainers/localstack": "^10.11.0"
   },
   "gitHead": "3991c0de7b6db53faa0f751951ce8a1227a3552d"
 }
