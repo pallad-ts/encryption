@@ -40,8 +40,7 @@
   "dependencies": {
     "@aws-sdk/client-kms": "^3.620.1",
     "@pallad/encryption": "^4.0.0",
-    "@pallad/text-buffer-view": "^1.0.3",
-    "@sweet-monads/either": "^3.1.0"
+    "@pallad/text-buffer-view": "^1.0.3"
   },
   "devDependencies": {
     "@pallad/errors-dev": "^1.1.0",
