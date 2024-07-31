@@ -40,7 +40,7 @@ export class EncrypterAesGcm extends Encrypter {
         });
     }
 
-    async encrypt(data: Buffer | TextBufferView, keyId?: KeyId): Promise<TextBufferView> {
+    async encrypt(data: ArrayBuffer | Buffer | TextBufferView, keyId?: KeyId): Promise<TextBufferView> {
         const key = keyId ? this.keyRing.assertEntryById(keyId) : this.keyRing.getRandomKey();
 
         const [iv, cryptoKey] = await Promise.all([
@@ -58,10 +58,17 @@ export class EncrypterAesGcm extends Encrypter {
         return new TextBufferView(Ciphertext.schema.parse({ keyId: key.id, iv, encrypted }).toBuffer());
     }
 
-    async decrypt(data: TextBufferView): Promise<TextBufferView> {
-        const { iv, encrypted, keyId } = Ciphertext.fromBuffer(Buffer.from(data.arrayBuffer)).unwrap(x => {
+    async decrypt(data: ArrayBuffer | Buffer | TextBufferView): Promise<TextBufferView> {
+        const ciphertext = Ciphertext.fromBuffer(
+            data instanceof TextBufferView
+                ? Buffer.from(data.originalArrayBuffer)
+                : Buffer.isBuffer(data)
+                  ? data
+                  : Buffer.from(data)
+        ).unwrap(x => {
             throw new EncryptionError(x);
         });
+        const { iv, encrypted, keyId } = ciphertext;
         const key = this.keyRing.assertKeyById(keyId);
         const cryptoKey = await getCryptoKey(key.getValue());
         return TextBufferView.fromArrayBuffer(

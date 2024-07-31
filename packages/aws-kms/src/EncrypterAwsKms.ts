@@ -12,7 +12,7 @@ export class EncrypterAwsKms extends Encrypter {
         this.#keyId = keyId;
     }
 
-    async encrypt(data: ArrayBuffer | TextBufferView): Promise<TextBufferView> {
+    async encrypt(data: ArrayBuffer | Buffer | TextBufferView): Promise<TextBufferView> {
         const result = await this.#client.send(
             new EncryptCommand({
                 Plaintext: new Uint8Array(data instanceof TextBufferView ? data.originalArrayBuffer : data),
@@ -23,10 +23,16 @@ export class EncrypterAwsKms extends Encrypter {
         return TextBufferView.fromArrayBuffer(result.CiphertextBlob!);
     }
 
-    async decrypt(data: TextBufferView): Promise<TextBufferView> {
+    async decrypt(data: Buffer | ArrayBuffer | TextBufferView): Promise<TextBufferView> {
+        const cipherTextBlob: Uint8Array =
+            data instanceof TextBufferView
+                ? new Uint8Array(data.originalArrayBuffer)
+                : Buffer.isBuffer(data)
+                  ? data
+                  : new Uint8Array(data);
         const result = await this.#client.send(
             new DecryptCommand({
-                CiphertextBlob: new Uint8Array(data.originalArrayBuffer),
+                CiphertextBlob: cipherTextBlob,
                 KeyId: this.#keyId,
             })
         );

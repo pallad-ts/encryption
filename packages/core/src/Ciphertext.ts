@@ -27,12 +27,12 @@ const schema = z
         ) as Ciphertext;
     });
 
+const bufferMap = new WeakMap<Ciphertext, Buffer>();
+
 export class Ciphertext {
     readonly keyId: KeyId;
     readonly iv: Buffer;
     readonly encrypted: Buffer;
-
-    #buffer: Buffer | undefined;
 
     constructor() {
         throw new Error("Use Ciphertext.fromString or Ciphertext.schema.parse to create Ciphertext");
@@ -43,10 +43,12 @@ export class Ciphertext {
     }
 
     toBuffer() {
-        if (!this.#buffer) {
-            this.#buffer = Buffer.concat(Array.from(encode(this)));
+        let buffer = bufferMap.get(this);
+        if (!buffer) {
+            buffer = Buffer.concat(Array.from(encode(this)));
+            bufferMap.set(this, buffer);
         }
-        return this.#buffer;
+        return buffer;
     }
 
     static fromString(input: string): Either<string, Ciphertext> {

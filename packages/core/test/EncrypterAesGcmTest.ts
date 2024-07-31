@@ -21,8 +21,14 @@ describe("EncrypterAesGcm", () => {
         const decryptedBuffer = await encrypter.decrypt(encryptedBuffer);
         const encryptedTextBufferView = await encrypter.encrypt(TextBufferView.fromString(input, "utf8"));
         const decryptedTextBufferView = await encrypter.decrypt(encryptedTextBufferView);
-        expect(decryptedBuffer.toString('utf8')).toEqual(input);
-        expect(decryptedTextBufferView.toString('utf8')).toEqual(input);
+        const encryptedArrayBuffer = await encrypter.encrypt(
+            TextBufferView.fromString(input, "utf8").originalArrayBuffer
+        );
+        const decryptedArrayBuffer = await encrypter.decrypt(encryptedArrayBuffer);
+
+        expect(decryptedArrayBuffer.toString("utf8")).toEqual(input);
+        expect(decryptedBuffer.toString("utf8")).toEqual(input);
+        expect(decryptedTextBufferView.toString("utf8")).toEqual(input);
     }
 
     it.each([["somerandomstring"], [JSON.stringify({ some: { random: "data" } })]])(
